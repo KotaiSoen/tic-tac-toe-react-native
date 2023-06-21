@@ -30,8 +30,6 @@ export default function Home() {
       return updatedArray;
     });
     setPlayer((prev) => !prev);
-    checkWinner();
-    checkDraw();
   };
 
   function Box({ index }: { index: number }) {
@@ -97,7 +95,8 @@ export default function Home() {
   
 
   useEffect(() => {
-    
+    checkWinner();
+    checkDraw();
   }, [numberArray]);
 
   return (
