@@ -22,14 +22,17 @@ export default function Home() {
   const played = (index: number) => {
     setNumberArray((prev) => {
       const updatedArray = [...prev];
-      updatedArray[index] = {
-        ...updatedArray[index],
-        clicked: true,
-        character: player ? "x" : "o",
-      };
+      if(!updatedArray[index].clicked) {
+        updatedArray[index] = {
+          ...updatedArray[index],
+          clicked: true,
+          character: player ? "x" : "o",
+        };
+        setPlayer((prev) => !prev);
+        return updatedArray;
+      }
       return updatedArray;
     });
-    setPlayer((prev) => !prev);
   };
 
   function Box({ index }: { index: number }) {
@@ -71,17 +74,20 @@ export default function Home() {
           numberArray[a].character === "x" ? "Player 1" : "Player 2";
         alert(`${winner} is the winner`);
         resetGame();
-        break; // Exit the loop after finding a winner
+        return true; // Exit the loop after finding a winner
       }
     }
-  }
+    return false;
+  };
 
   const checkDraw = () => {
-    if (numberArray.every((box) => box.clicked)) {
-      alert("It's a draw!");
-      resetGame();
+    if (!checkWinner()) {
+      if (numberArray.every((box) => box.clicked)) {
+        alert("It's a draw!");
+        resetGame();
+      }
     }
-  }
+  };
 
   const resetGame = () => {
     setNumberArray(
@@ -92,10 +98,8 @@ export default function Home() {
     setPlayer(true); // Reset player to initial state if needed
   };
 
-  
-
   useEffect(() => {
-    checkWinner();
+    // checkWinner();
     checkDraw();
   }, [numberArray]);
 
